@@ -1,0 +1,50 @@
+﻿name: Build elektrond.s9pk
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y squashfs-tools squashfs-tools-ng
+
+      - name: Install start-cli
+        run: curl -fsSL https://start9.com/start-cli/install.sh | sh
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Init developer key
+        run: start-cli init-key
+
+      - name: Build s9pk
+        run: make
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: elektrond-s9pk
+          path: "*.s9pk"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/main'
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: "Elektron Build ${{ github.run_number }}"
+          files: "*.s9pk"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

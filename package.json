@@ -1,0 +1,14 @@
+﻿{
+  "scripts": {
+    "check": "tsc --noEmit",
+    "build": "rm -rf ./javascript && ncc build startos/index.ts -o ./javascript"
+  },
+  "dependencies": {
+    "@start9labs/start-sdk": "^0.3.6.3",
+    "diskusage": "^1.2.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.0",
+    "typescript": "^5.0.0"
+  }
+}
