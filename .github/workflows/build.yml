@@ -30,6 +30,9 @@ jobs:
       - name: Init developer key
         run: start-cli init-key
 
+      - name: Compile TypeScript to javascript/index.js
+        run: npm run build
+
       - name: Build s9pk
         run: make
 
