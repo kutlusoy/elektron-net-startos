@@ -225,7 +225,7 @@ export const fullConfigSpec = sdk.InputSpec.of({
   zmqEnabled: Value.triState({
     name: i18n('ZeroMQ Enabled'),
     description: i18n(
-      'The ZeroMQ interface is useful for some applications which might require data related to block and transaction events from Bitcoin Core. For example, LND requires ZeroMQ be enabled for LND to get the latest block data',
+      'The ZeroMQ interface is useful for some applications which might require data related to block and transaction events from Elektron. For example, LND requires ZeroMQ be enabled for LND to get the latest block data',
     ),
     default: true,
     footnote: `${i18n('Default')}: false`,
@@ -270,15 +270,15 @@ export const fullConfigSpec = sdk.InputSpec.of({
       discardfee: Value.number({
         name: i18n('Discard Change Tolerance'),
         description: i18n(
-          'The fee rate (in BTC/kB) that indicates your tolerance for discarding change by adding it to the fee.',
+          'The fee rate (in ELEK/kB) that indicates your tolerance for discarding change by adding it to the fee.',
         ),
         required: false,
         default: null,
         min: 0,
         max: 0.01,
         integer: false,
-        units: i18n('BTC/kB'),
-        footnote: `${i18n('Default')}: 0.0001 BTC/kB`,
+        units: i18n('ELEK/kB'),
+        footnote: `${i18n('Default')}: 0.0001 ELEK/kB`,
       }),
     }),
   ),
@@ -369,7 +369,7 @@ export const fullConfigSpec = sdk.InputSpec.of({
     default: null,
     footnote: `${i18n('Default')}: false`,
     warning: i18n(
-      'Requires Tor or I2P to be active. Bitcoin Core will refuse to start if neither is available.',
+      'Requires Tor or I2P to be active. Elektron will refuse to start if neither is available.',
     ),
   }),
   connectpeer: Value.union({
@@ -385,7 +385,7 @@ export const fullConfigSpec = sdk.InputSpec.of({
                 name: i18n('Connect Nodes'),
                 minLength: 1,
                 description: i18n(
-                  'Add addresses of nodes for Bitcoin to EXCLUSIVELY connect to.',
+                  'Add addresses of nodes for Elektron to EXCLUSIVELY connect to.',
                 ),
               },
               {
@@ -411,7 +411,7 @@ export const fullConfigSpec = sdk.InputSpec.of({
               {
                 name: i18n('Add Nodes'),
                 description: i18n(
-                  'Add addresses of nodes for Bitcoin to connect with in addition to default nodes.',
+                  'Add addresses of nodes for Elektron to connect with in addition to default nodes.',
                 ),
               },
               {

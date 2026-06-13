@@ -2,15 +2,15 @@ export const DEFAULT_LANG = 'en_US'
 
 const dict = {
   // main.ts
-  'The Bitcoin RPC Interface is ready': 1,
-  'The Bitcoin RPC Interface is not ready': 2,
+  'The Elektron RPC Interface is ready': 1,
+  'The Elektron RPC Interface is not ready': 2,
   'Blockchain Sync': 3,
-  'Bitcoin is fully synced': 4,
-  'Bitcoin is starting…': 5,
+  'Elektron is fully synced': 4,
+  'Elektron is starting…': 5,
   'Syncing blocks...${percentage}%': 6,
   'RPC Proxy': 7,
-  'The Bitcoin RPC Proxy is ready': 8,
-  'The Bitcoin RPC Proxy is not ready': 9,
+  'The Elektron RPC Proxy is ready': 8,
+  'The Elektron RPC Proxy is not ready': 9,
   'Sync Complete': 10,
   'The blockchain is fully synced.': 11,
 
@@ -22,19 +22,19 @@ const dict = {
   'ZeroMQ Interface': 104,
   'I2P Daemon Console': 105,
   'Interface to access the embedded I2P daemon console': 106,
-  'Streams real-time Bitcoin block and transaction notifications (hashes and raw data)': 107,
+  'Streams real-time Elektron block and transaction notifications (hashes and raw data)': 107,
 
   // actions/generateRpcUser.ts
   Username: 200,
   'RPC Auth Username': 201,
   'Must be alphanumeric (can contain underscore).': 202,
   'Generate RPC User Credentials': 203,
-  'Generate RPC User Credentials for remote connections i.e. Sparrow. rpcauth.py will randomly generate a secure password. The username and hashed password will be persisted in Bitcoin.conf': 204,
+  'Generate RPC User Credentials for remote connections i.e. Sparrow. rpcauth.py will randomly generate a secure password. The username and hashed password will be persisted in Elektron.conf': 204,
   'RPC Users': 205,
   'Error creating RPC Auth User': 206,
   'RPCAuth entry with this username already exists.': 207,
   'RPC user successfully created': 208,
-  'RPC password created for ${username}. Store this password in a secure place. If lost, a new RPC user will need to be created as Bitcoin.conf only stores a hash of the password': 209,
+  'RPC password created for ${username}. Store this password in a secure place. If lost, a new RPC user will need to be created as Elektron.conf only stores a hash of the password': 209,
   'Failed to create RPC user': 212,
   'rpcauth.py failed with error: ${error}': 213,
 
@@ -52,7 +52,7 @@ const dict = {
   // actions/deleteRpcAuth.ts
   'Existing RPC Users': 400,
   'Delete RPC Users': 401,
-  'Delete RPC users from Bitcoin.conf. You may want to run this action if the RPC Auth entry is no longer needed or if the password is lost.': 402,
+  'Delete RPC users from Elektron.conf. You may want to run this action if the RPC Auth entry is no longer needed or if the password is lost.': 402,
   'There are no RPC users': 403,
 
   // actions/reindexBlockchain.ts
@@ -60,15 +60,15 @@ const dict = {
   'Rebuilds the block and chainstate databases starting from genesis. If blocks already exist on disk, these are used rather than being re-downloaded. For pruned nodes, this means downloading the entire blockchain over again.': 501,
   'Blocks not stored on disk will be re-downloaded in order to rebuild the database. If your node is pruned, this action is equivalent to syncing the node from scratch, so this process could take weeks on low-end hardware.': 502,
   Reindex: 503,
-  'Restarting bitcoind with -reindex argument': 504,
-  'The next time bitcoind is started it will be run with the -reindex argument': 505,
+  'Restarting elektrond with -reindex argument': 504,
+  'The next time elektrond is started it will be run with the -reindex argument': 505,
 
   // actions/reindexChainstate.ts
   'Reindex Chainstate': 600,
   "Rebuilds the chainstate database using existing block index data; as the block index is not rebuilt, 'reindex_chainstate' should be strictly faster than 'reindex'. This action should only be used in the case of chainstate corruption; if the blocks stored on disk are corrupted, the 'reindex' action will need to be run instead.": 601,
   "While faster than 'Reindex', 'Reindex Chainstate' can still take several days or more to complete.": 602,
-  'Restarting bitcoind with -reindex-chainstate argument': 603,
-  'The next time bitcoind is started it will be run with the -reindex-chainstate argument': 604,
+  'Restarting elektrond with -reindex-chainstate argument': 603,
+  'The next time elektrond is started it will be run with the -reindex-chainstate argument': 604,
 
   // actions/deletePeers.ts
   'Delete Peer List': 700,
@@ -79,20 +79,20 @@ const dict = {
   // actions/deleteTxIndex.ts
   'Delete Transaction Index': 800,
   'Deletes the Transaction Index (txindex) in the event it gets corrupted.': 801,
-  "The Transaction Index will be rebuilt once Bitcoin Core is started again, unless 'Coinstats Index' is disabled in the config settings. Please don't do this unless you fully understand what you are doing.": 802,
+  "The Transaction Index will be rebuilt once Elektron is started again, unless 'Coinstats Index' is disabled in the config settings. Please don't do this unless you fully understand what you are doing.": 802,
   'Successfully deleted txindex': 803,
 
   // actions/deleteCoinstatsIndex.ts
   'Delete Coinstats Index': 900,
   'Deletes the Coinstats Index (coinstatsindex) in case it gets corrupted.': 901,
-  "The Coinstats Index will be rebuilt once Bitcoin Core is started again, unless 'Transaction Index' is disabled in the config settings. Please don't do this unless you fully understand what you are doing.": 902,
+  "The Coinstats Index will be rebuilt once Elektron is started again, unless 'Transaction Index' is disabled in the config settings. Please don't do this unless you fully understand what you are doing.": 902,
   'Successfully deleted coinstats index': 903,
 
   // actions/assumeutxo.ts
   'UTXO Snapshot URL': 1000,
   'URL of UTXO Snapshot to bootstrap bitcoin': 1001,
   'Download UTXO Snapshot (assumeutxo)': 1002,
-  'assumeutxo is a feature that allows fast bootstrapping of a validating bitcoind instance. It may take some additional time for any blocks between the snapshot blockheight and the tip to be downloaded and validated. While the snapshot is in use the IBD will continue in the background until it validates up to the snapshot blockheight': 1003,
+  'assumeutxo is a feature that allows fast bootstrapping of a validating elektrond instance. It may take some additional time for any blocks between the snapshot blockheight and the tip to be downloaded and validated. While the snapshot is in use the IBD will continue in the background until it validates up to the snapshot blockheight': 1003,
   "While any downloaded snapshot will be checked against a hash that's been hardcoded in source code, this action will download anything at the provided URL to the server - Only download from trusted sources!": 1004,
   'Download in progress...': 1005,
   'Snapshot in use': 1006,
@@ -100,12 +100,12 @@ const dict = {
 
   // actions/runtimeInfo.ts
   'Runtime Information': 1100,
-  'Network and other runtime information about this Bitcoin node': 1101,
+  'Network and other runtime information about this Elektron node': 1101,
   'Node Runtime Info': 1102,
   Connections: 1103,
   'The number of peers connected (inbound and outbound)': 1104,
   'IPC Socket Path': 1105,
-  'Unix socket path for IPC communication with Bitcoin Core. Other services can bind to this socket in their Docker configuration.': 1106,
+  'Unix socket path for IPC communication with Elektron. Other services can bind to this socket in their Docker configuration.': 1106,
   'Blockchain Info': 1107,
   'Block Height': 1108,
   'The current block height for the network': 1109,
@@ -158,11 +158,11 @@ const dict = {
   'Connect Peer': 1245,
   Connect: 1246,
   'Connect Nodes': 1247,
-  'Add addresses of nodes for Bitcoin to EXCLUSIVELY connect to.': 1248,
+  'Add addresses of nodes for Elektron to EXCLUSIVELY connect to.': 1248,
   "Must be either a domain name, or an IPv4 or IPv6 address. Be sure to include the port number, but do not include protocol scheme (eg 'http://').": 1249,
   'Add Node': 1250,
   'Add Nodes': 1251,
-  'Add addresses of nodes for Bitcoin to connect with in addition to default nodes.': 1252,
+  'Add addresses of nodes for Elektron to connect with in addition to default nodes.': 1252,
   'Blocks Only': 1258,
   'Reduce bandwidth by not relaying transactions. Blocks will still be downloaded and validated normally. Disables the mempool, wallet transaction broadcasting, and fee estimation.': 1259,
   'Maximum Connections': 1255,
@@ -203,9 +203,9 @@ const dict = {
 
   // actions/config/other.ts
   'ZeroMQ Enabled': 1700,
-  'The ZeroMQ interface is useful for some applications which might require data related to block and transaction events from Bitcoin Core. For example, LND requires ZeroMQ be enabled for LND to get the latest block data': 1701,
+  'The ZeroMQ interface is useful for some applications which might require data related to block and transaction events from Elektron. For example, LND requires ZeroMQ be enabled for LND to get the latest block data': 1701,
   'Transaction Index': 1702,
-  'By enabling Transaction Index (txindex) Bitcoin Core will build a complete transaction index. This allows Bitcoin Core to access any transaction with commands like `getrawtransaction`.': 1703,
+  'By enabling Transaction Index (txindex) Elektron will build a complete transaction index. This allows Elektron to access any transaction with commands like `getrawtransaction`.': 1703,
   'Not enough disk space': 1704,
   'Block Notify': 1705,
   'Execute an arbitrary command when the best block changes': 1706,
@@ -218,8 +218,8 @@ const dict = {
   'Avoid Partial Spends': 1713,
   'Group outputs by address, selecting all or none, instead of selecting on a per-output basis. This improves privacy at the expense of higher transaction fees.': 1714,
   'Discard Change Tolerance': 1715,
-  'The fee rate (in BTC/kB) that indicates your tolerance for discarding change by adding it to the fee.': 1716,
-  'BTC/kB': 1717,
+  'The fee rate (in ELEK/kB) that indicates your tolerance for discarding change by adding it to the fee.': 1716,
+  'ELEK/kB': 1717,
   Pruning: 1718,
   'Set the maximum size of the blockchain you wish to store on disk. Set to 0 to store the entire blockchain (full archival).': 1719,
   'If your node is already pruned increasing this value will require re-syncing your node. Switching from a full archival node to pruned will disable txindex (if enabled)': 1720,
@@ -229,7 +229,7 @@ const dict = {
   '1024 MiB on systems with ≥ 4 GiB RAM; 450 MiB otherwise': 2001,
   'Private Broadcast': 2002,
   'When enabled, transactions submitted via the sendrawtransaction RPC are broadcast over a separate Tor or I2P connection per transaction, hiding the originator IP from peers and unlinking multiple transactions from the same sender. Only affects sendrawtransaction; internal wallet sends are unaffected.': 2003,
-  'Requires Tor or I2P to be active. Bitcoin Core will refuse to start if neither is available.': 2004,
+  'Requires Tor or I2P to be active. Elektron will refuse to start if neither is available.': 2004,
   'Database Batch': 1724,
   'Maximum database write batch size in bytes. Higher values will speed up the critical sections when the utxo set is written to disk from memory in big batches.': 1725,
   Bytes: 1726,
@@ -243,7 +243,7 @@ const dict = {
   'Peers have the option of setting filters on each connection they make after the version handshake has completed. Bloom filters are for clients implementing SPV (Simplified Payment Verification) that want to check that block headers  connect together correctly, without needing to verify the full blockchain.  The client must trust that the transactions in the chain are in fact valid.  It is highly recommended AGAINST using for anything except Bisq integration.': 1734,
   'This is ONLY for use with Bisq integration, please use Block Filters for all other applications.': 1735,
   'Enable IPC': 1736,
-  'Enable inter-process communication (IPC) via Unix socket. This allows other services to communicate with Bitcoin Core using a high-performance local socket connection. The socket path will be displayed in Runtime Information.': 1737,
+  'Enable inter-process communication (IPC) via Unix socket. This allows other services to communicate with Elektron using a high-performance local socket connection. The socket path will be displayed in Runtime Information.': 1737,
   'IPC is an experimental feature. Only enable this if you know what you are doing with the IPC socket. An example use case would be Stratum v2 mining services.': 1738,
   'Changing this value will automatically restart the service.': 1742,
   'Other Settings': 1739,

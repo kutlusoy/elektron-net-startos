@@ -27,7 +27,7 @@ export const generateRpcUser = sdk.Action.withInput(
   async ({ effects }) => ({
     name: i18n('Generate RPC User Credentials'),
     description: i18n(
-      'Generate RPC User Credentials for remote connections i.e. Sparrow. rpcauth.py will randomly generate a secure password. The username and hashed password will be persisted in Bitcoin.conf',
+      'Generate RPC User Credentials for remote connections i.e. Sparrow. rpcauth.py will randomly generate a secure password. The username and hashed password will be persisted in Elektron.conf',
     ),
     warning: null,
     allowedStatuses: 'any',
@@ -79,7 +79,7 @@ export const generateRpcUser = sdk.Action.withInput(
         version: '1',
         title: i18n('RPC user successfully created'),
         message: i18n(
-          'RPC password created for ${username}. Store this password in a secure place. If lost, a new RPC user will need to be created as Bitcoin.conf only stores a hash of the password',
+          'RPC password created for ${username}. Store this password in a secure place. If lost, a new RPC user will need to be created as Elektron.conf only stores a hash of the password',
           { username: input.username },
         ),
         result: {

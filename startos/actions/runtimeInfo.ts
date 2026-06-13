@@ -17,7 +17,7 @@ export const runtimeInfo = sdk.Action.withoutInput(
   async ({ effects }) => ({
     name: i18n('Runtime Information'),
     description: i18n(
-      'Network and other runtime information about this Bitcoin node',
+      'Network and other runtime information about this Elektron node',
     ),
     warning: null,
     allowedStatuses: 'only-running',

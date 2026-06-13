@@ -39,7 +39,7 @@ export const deleteRpcAuth = sdk.Action.withInput(
     return {
       name: i18n('Delete RPC Users'),
       description: i18n(
-        'Delete RPC users from Bitcoin.conf. You may want to run this action if the RPC Auth entry is no longer needed or if the password is lost.',
+        'Delete RPC users from Elektron.conf. You may want to run this action if the RPC Auth entry is no longer needed or if the password is lost.',
       ),
       warning: null,
       allowedStatuses: 'any',

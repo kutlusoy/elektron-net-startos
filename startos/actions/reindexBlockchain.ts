@@ -34,7 +34,7 @@ export const reindexBlockchain = sdk.Action.withoutInput(
       return {
         version: '1',
         title: i18n('Success'),
-        message: i18n('Restarting bitcoind with -reindex argument'),
+        message: i18n('Restarting elektrond with -reindex argument'),
         result: null,
       }
     }
@@ -43,7 +43,7 @@ export const reindexBlockchain = sdk.Action.withoutInput(
       version: '1',
       title: i18n('Success'),
       message: i18n(
-        'The next time bitcoind is started it will be run with the -reindex argument',
+        'The next time elektrond is started it will be run with the -reindex argument',
       ),
       result: null,
     }
