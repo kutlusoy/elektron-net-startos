@@ -238,6 +238,18 @@ export const fullConfigSpec = sdk.InputSpec.of({
       'Execute an arbitrary command when the best block changes',
     ),
   }),
+  prune: Value.hidden(
+    z
+      .union([
+        z.array(z.string()).transform((a) => Number(a.at(-1))),
+        z.string().transform(Number),
+        z.number(),
+      ])
+      .transform((v) => (v > 0 && v < minPrune ? minPrune : v))
+      .catch(minPrune),
+  ),
+  txindex: Value.hidden(iniBoolean),
+  coinstatsindex: Value.hidden(iniBoolean),
   wallet: Value.object(
     { name: i18n('Wallet'), description: i18n('Wallet Settings') },
     InputSpec.of({
@@ -258,15 +270,15 @@ export const fullConfigSpec = sdk.InputSpec.of({
       discardfee: Value.number({
         name: i18n('Discard Change Tolerance'),
         description: i18n(
-          'The fee rate (in ELEK/kB) that indicates your tolerance for discarding change by adding it to the fee.',
+          'The fee rate (in BTC/kB) that indicates your tolerance for discarding change by adding it to the fee.',
         ),
         required: false,
         default: null,
         min: 0,
         max: 0.01,
         integer: false,
-        units: i18n('ELEK/kB'),
-        footnote: `${i18n('Default')}: 0.0001 ELEK/kB`,
+        units: i18n('BTC/kB'),
+        footnote: `${i18n('Default')}: 0.0001 BTC/kB`,
       }),
     }),
   ),
