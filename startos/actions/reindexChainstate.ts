@@ -1,4 +1,3 @@
-import { bitcoinConfFile } from '../fileModels/bitcoin.conf'
 import { storeJson } from '../fileModels/store.json'
 import { sdk } from '../sdk'
 import { i18n } from '../i18n'
@@ -18,9 +17,7 @@ export const reindexChainstate = sdk.Action.withoutInput(
     ),
     allowedStatuses: 'any',
     group: i18n('Reindex'),
-    visibility: (await bitcoinConfFile.read().const(effects))?.prune
-      ? 'hidden'
-      : 'enabled',
+    visibility: 'enabled',
   }),
 
   // execution function

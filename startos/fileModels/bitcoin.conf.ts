@@ -126,7 +126,7 @@ export const shape = z.object({
       z.number(),
     ])
     .transform((v) => (v > 0 && v < minPrune ? minPrune : v))
-    .catch(0),
+    .catch(minPrune),
   coinstatsindex: iniBoolean,
   txindex: iniBoolean,
   peerbloomfilters: iniBoolean,
@@ -230,19 +230,6 @@ export const fullConfigSpec = sdk.InputSpec.of({
     default: true,
     footnote: `${i18n('Default')}: false`,
   }),
-  txindex: Value.dynamicTriState(async ({ effects }) => {
-    const disk = await diskUsage()
-    return {
-      name: i18n('Transaction Index'),
-      default: null,
-      description: i18n(
-        'By enabling Transaction Index (txindex) Bitcoin Core will build a complete transaction index. This allows Bitcoin Core to access any transaction with commands like `getrawtransaction`.',
-      ),
-      footnote: `${i18n('Default')}: false`,
-      disabled:
-        disk.total < archivalMin ? i18n('Not enough disk space') : false,
-    }
-  }),
   blocknotify: Value.text({
     name: i18n('Block Notify'),
     required: false,
@@ -250,14 +237,6 @@ export const fullConfigSpec = sdk.InputSpec.of({
     description: i18n(
       'Execute an arbitrary command when the best block changes',
     ),
-  }),
-  coinstatsindex: Value.triState({
-    name: i18n('Coinstats Index'),
-    description: i18n(
-      'Enabling Coinstats Index reduces the time for the gettxoutsetinfo RPC to complete at the cost of using additional disk space',
-    ),
-    default: null,
-    footnote: `${i18n('Default')}: false`,
   }),
   wallet: Value.object(
     { name: i18n('Wallet'), description: i18n('Wallet Settings') },
@@ -279,39 +258,18 @@ export const fullConfigSpec = sdk.InputSpec.of({
       discardfee: Value.number({
         name: i18n('Discard Change Tolerance'),
         description: i18n(
-          'The fee rate (in BTC/kB) that indicates your tolerance for discarding change by adding it to the fee.',
+          'The fee rate (in ELEK/kB) that indicates your tolerance for discarding change by adding it to the fee.',
         ),
         required: false,
         default: null,
         min: 0,
         max: 0.01,
         integer: false,
-        units: i18n('BTC/kB'),
-        footnote: `${i18n('Default')}: 0.0001 BTC/kB`,
+        units: i18n('ELEK/kB'),
+        footnote: `${i18n('Default')}: 0.0001 ELEK/kB`,
       }),
     }),
   ),
-  prune: Value.dynamicNumber(async ({ effects }) => {
-    const disk = await diskUsage()
-    const smallDisk = disk.total < archivalMin
-
-    return {
-      name: i18n('Pruning'),
-      description: i18n(
-        'Set the maximum size of the blockchain you wish to store on disk. Set to 0 to store the entire blockchain (full archival).',
-      ),
-      warning: i18n(
-        'If your node is already pruned increasing this value will require re-syncing your node. Switching from a full archival node to pruned will disable txindex (if enabled)',
-      ),
-      placeholder: null,
-      required: false,
-      default: smallDisk ? minPrune : 0,
-      integer: true,
-      units: 'MiB',
-      min: smallDisk ? minPrune : 0,
-      max: Math.floor((disk.total * 0.75) / (1024 * 1024)),
-    }
-  }),
   dbcache: Value.number({
     name: i18n('Database Cache'),
     description: i18n(

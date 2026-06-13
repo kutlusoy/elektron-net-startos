@@ -1,5 +1,4 @@
 import { bitcoinConfFile, fullConfigSpec } from '../../fileModels/bitcoin.conf'
-import { storeJson } from '../../fileModels/store.json'
 import { i18n } from '../../i18n'
 import { sdk } from '../../sdk'
 
@@ -21,12 +20,9 @@ export const otherConfig = sdk.Action.withInput(
   fullConfigSpec.filter({
     blockfilters: true,
     blocknotify: true,
-    coinstatsindex: true,
     dbbatchsize: true,
     dbcache: true,
     peerbloomfilters: true,
-    prune: true,
-    txindex: true,
     wallet: true,
     zmqEnabled: true,
   }),
@@ -36,12 +32,6 @@ export const otherConfig = sdk.Action.withInput(
 
   // the execution function
   async ({ effects, input }) => {
-    const oldPrune = await bitcoinConfFile.read((c) => c.prune).once()
-
     await bitcoinConfFile.merge(effects, input)
-
-    await storeJson.merge(effects, {
-      reindexBlockchain: !!oldPrune && !input.prune,
-    })
   },
 )

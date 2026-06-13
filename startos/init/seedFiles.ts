@@ -1,9 +1,7 @@
 import {
-  archivalMin,
   bitcoinConfFile,
   defaultDbbatchsize,
   defaultDbcache,
-  diskUsage,
   minPrune,
 } from '../fileModels/bitcoin.conf'
 import { i2pdConfFile } from '../fileModels/i2pd.conf'
@@ -24,11 +22,9 @@ export const seedFiles = sdk.setupOnInit(async (effects, kind) => {
       blockfilters: { blockfilterindex: true },
       dbcache: defaultDbcache(),
       dbbatchsize: defaultDbbatchsize(),
-      prune: (await diskUsage()).total < archivalMin ? minPrune : 0,
+      prune: minPrune,
       raw: {
         i2psam: i2PSamAddress,
-        assumevalid:
-          '00000000000000000000611fd22f2df7c8fbd0688745c3a6c3bb5109cc2a12cb',
       },
     })
   } else {
