@@ -1,4 +1,4 @@
-﻿{
+{
   "scripts": {
     "check": "tsc --noEmit",
     "build": "rm -rf ./javascript && ncc build startos/index.ts -o ./javascript"
