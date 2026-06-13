@@ -1,22 +1,22 @@
-﻿FROM debian:stable-slim AS builder
+FROM debian:stable-slim AS builder
 WORKDIR /build
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential git autoconf automake libtool pkg-config \
+    build-essential cmake git pkg-config python3 \
     libboost-all-dev libssl-dev libevent-dev libzmq3-dev \
     libsqlite3-dev ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/kutlusoy/elektron-net.git /elektron
 WORKDIR /elektron
-RUN ./autogen.sh && \
-    ./configure \
-        --without-gui \
-        --disable-tests \
-        --disable-bench \
-        --disable-man && \
-    make -j$(nproc) && \
-    make install
+RUN cmake -B build \
+        -DBUILD_GUI=OFF \
+        -DBUILD_TESTS=OFF \
+        -DBUILD_BENCH=OFF \
+        -DBUILD_FUZZ_BINARY=OFF \
+        -DINSTALL_MAN=OFF && \
+    cmake --build build -j$(nproc) && \
+    cmake --install build
 
 FROM debian:stable-slim
 ENV ELEKTRON_DATA=/root/.elektron
