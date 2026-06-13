@@ -3,17 +3,19 @@ import * as fs from 'fs/promises'
 import { rootDir, bitcoinMounts } from '../utils'
 import { i18n } from '../i18n'
 
-export const deletePeers = sdk.Action.withoutInput(
+export const deleteTxIndex = sdk.Action.withoutInput(
   // id
-  'delete-peers',
+  'delete-txindex',
 
   // metadata
   async ({ effects }) => ({
-    name: i18n('Delete Peer List'),
+    name: i18n('Delete Transaction Index'),
     description: i18n(
-      'Deletes the Peer List (peers.dat) in case it gets corrupted.',
+      'Deletes the Transaction Index (txindex) in the event it gets corrupted.',
     ),
-    warning: null,
+    warning: i18n(
+      "The Transaction Index will be rebuilt once Bitcoin Core is started again, unless 'Coinstats Index' is disabled in the config settings. Please don't do this unless you fully understand what you are doing.",
+    ),
     allowedStatuses: 'only-stopped',
     group: i18n('Delete Corrupted Files'),
     visibility: 'enabled',
@@ -25,16 +27,18 @@ export const deletePeers = sdk.Action.withoutInput(
       effects,
       { imageId: 'elektrond' },
       bitcoinMounts,
-      'delete-peers',
+      'delete-txindex',
       async (subc) => {
-        await fs.rm(`${subc.rootfs}/${rootDir}/peers.dat`, { force: true })
+        await fs.rmdir(`${subc.rootfs}/${rootDir}/indexes/txindex`, {
+          recursive: true,
+        })
       },
     )
 
     return {
       version: '1',
       title: i18n('Success'),
-      message: i18n('Successfully deleted peers.dat'),
+      message: i18n('Successfully deleted txindex'),
       result: null,
     }
   },

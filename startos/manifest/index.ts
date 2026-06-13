@@ -1,35 +1,61 @@
-﻿import { setupManifest } from '@start9labs/start-sdk'
+import { setupManifest } from '@start9labs/start-sdk'
+import {
+  alertRestore,
+  alertUninstall,
+  long,
+  short,
+  torDescription,
+} from './i18n'
 
 export const manifest = setupManifest({
   id: 'elektrond',
   title: 'Elektron',
   license: 'MIT',
   donationUrl: null,
-  packageRepo: 'https://github.com/kutlusoy/elektron-net-startos',
+  packageRepo:
+    'https://github.com/kutlusoy/elektron-net-startos',
   upstreamRepo: 'https://github.com/kutlusoy/elektron-net',
   marketingUrl: 'https://elektron-net.org/',
-  description: {
-    short: 'Elektron - A Bitcoin fork with 60-second blocks and 137-day UTXO expiry.',
-    long: 'Elektron is a Bitcoin Core fork featuring 60-second block times, mandatory 137-day transaction history expiry (UTXO pruning), and GDPR-aligned right-to-be-forgotten design. Named after the Lydian electrum coin and grounded in Stoic philosophy and the fine-structure constant alpha = 137.',
-  },
-  volumes: ['main'],
+  description: { short, long },
+  volumes: ['main', 'i2pd'],
   images: {
     elektrond: {
       source: {
         dockerBuild: {
-          buildArgs: {},
+          buildArgs: {
+            VERSION: '0.1.0',
+          },
         },
       },
+      arch: ['x86_64', 'aarch64', 'riscv64'],
+    },
+    proxy: {
+      source: {
+        dockerTag: 'ghcr.io/start9labs/btc-rpc-proxy',
+      },
+      arch: ['x86_64', 'aarch64', 'riscv64'],
+    },
+    python: {
+      source: {
+        dockerTag: 'python:3.14.2-alpine',
+      },
+      arch: ['x86_64', 'aarch64', 'riscv64'],
+    },
+    i2pd: {
+      source: {
+        dockerTag: 'purplei2p/i2pd:release-2.58.0',
+      },
       arch: ['x86_64', 'aarch64'],
+      emulateMissingAs: 'x86_64',
     },
   },
   alerts: {
-    uninstall: 'Uninstalling Elektron will delete your blockchain data and wallet.',
-    restore: null,
+    uninstall: alertUninstall,
+    restore: alertRestore,
   },
   dependencies: {
     tor: {
-      description: 'Required for .onion peer connectivity.',
+      description: torDescription,
       optional: true,
       metadata: {
         title: 'Tor',
