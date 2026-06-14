@@ -55,7 +55,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
   /**
    * ======================== Setup (optional) ========================
    */
-  console.log('Starting Elektron!')
+  console.log('Starting Elektron Net!')
 
   // get store.json but don't watch for changes
   const store = await storeJson.read().once()
@@ -73,7 +73,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
 
   const { reindexBlockchain, reindexChainstate } = store
 
-  // get Tor container IP (restarts Elektron if IP changes, needed for -onion= flag)
+  // get Tor container IP (restarts Elektron Net if IP changes, needed for -onion= flag)
   const torIp = await sdk.getContainerIp(effects, { packageId: 'tor' }).const()
 
   // track Tor running status dynamically for health check (no restart needed)
@@ -189,7 +189,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
           } catch {
             console.log('Waiting for cookie to be created')
             return {
-              message: i18n('The Elektron RPC Interface is not ready'),
+              message: i18n('The Elektron Net RPC Interface is not ready'),
               result: 'starting',
             }
           }
@@ -198,8 +198,8 @@ export const main = sdk.setupMain(async ({ effects }) => {
             effects,
             bitcoinConf.prune ? rpcPortPruned : rpcPort,
             {
-              successMessage: i18n('The Elektron RPC Interface is ready'),
-              errorMessage: i18n('The Elektron RPC Interface is not ready'),
+              successMessage: i18n('The Elektron Net RPC Interface is ready'),
+              errorMessage: i18n('The Elektron Net RPC Interface is not ready'),
             },
           )
         },
@@ -238,13 +238,13 @@ export const main = sdk.setupMain(async ({ effects }) => {
             }
 
             return {
-              message: i18n('Elektron is fully synced'),
+              message: i18n('Elektron Net is fully synced'),
               result: 'success',
             }
           }
 
           return {
-            message: i18n('Elektron is starting…'),
+            message: i18n('Elektron Net is starting…'),
             result: 'starting',
           }
         },
@@ -447,8 +447,8 @@ export const main = sdk.setupMain(async ({ effects }) => {
         display: i18n('RPC Proxy'),
         fn: () =>
           sdk.healthCheck.checkPortListening(effects, rpcPort, {
-            successMessage: i18n('The Elektron RPC Proxy is ready'),
-            errorMessage: i18n('The Elektron RPC Proxy is not ready'),
+            successMessage: i18n('The Elektron Net RPC Proxy is ready'),
+            errorMessage: i18n('The Elektron Net RPC Proxy is not ready'),
           }),
       },
       requires: ['elektrond' as const],

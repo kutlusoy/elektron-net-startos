@@ -225,7 +225,7 @@ export const fullConfigSpec = sdk.InputSpec.of({
   zmqEnabled: Value.triState({
     name: i18n('ZeroMQ Enabled'),
     description: i18n(
-      'The ZeroMQ interface is useful for some applications which might require data related to block and transaction events from Elektron. For example, LND requires ZeroMQ be enabled for LND to get the latest block data',
+      'The ZeroMQ interface is useful for some applications which might require data related to block and transaction events from Elektron Net. For example, LND requires ZeroMQ be enabled for LND to get the latest block data',
     ),
     default: true,
     footnote: `${i18n('Default')}: false`,
@@ -369,7 +369,7 @@ export const fullConfigSpec = sdk.InputSpec.of({
     default: null,
     footnote: `${i18n('Default')}: false`,
     warning: i18n(
-      'Requires Tor or I2P to be active. Elektron will refuse to start if neither is available.',
+      'Requires Tor or I2P to be active. Elektron Net will refuse to start if neither is available.',
     ),
   }),
   connectpeer: Value.union({
@@ -385,7 +385,7 @@ export const fullConfigSpec = sdk.InputSpec.of({
                 name: i18n('Connect Nodes'),
                 minLength: 1,
                 description: i18n(
-                  'Add addresses of nodes for Elektron to EXCLUSIVELY connect to.',
+                  'Add addresses of nodes for Elektron Net to EXCLUSIVELY connect to.',
                 ),
               },
               {
@@ -411,7 +411,7 @@ export const fullConfigSpec = sdk.InputSpec.of({
               {
                 name: i18n('Add Nodes'),
                 description: i18n(
-                  'Add addresses of nodes for Elektron to connect with in addition to default nodes.',
+                  'Add addresses of nodes for Elektron Net to connect with in addition to default nodes.',
                 ),
               },
               {

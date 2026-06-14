@@ -9,7 +9,7 @@ import {
 
 export const manifest = setupManifest({
   id: 'elektrond',
-  title: 'Elektron',
+  title: 'Elektron Net',
   license: 'MIT',
   donationUrl: null,
   packageRepo:
@@ -23,7 +23,7 @@ export const manifest = setupManifest({
       source: {
         dockerBuild: {
           buildArgs: {
-            VERSION: '0.1.0',
+            VERSION: '4.0.0',
           },
         },
       },

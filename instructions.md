@@ -1,10 +1,10 @@
-# Elektron
+# Elektron Net
 
-Elektron begins its Initial Block Download (IBD) — fetching and verifying the chain — the moment it launches; nothing needs configuring first. This page covers what's specific to running it on StartOS, and the points where Elektron deliberately diverges from Bitcoin Core.
+Elektron Net begins its Initial Block Download (IBD) — fetching and verifying the chain — the moment it launches; nothing needs configuring first. This page covers what's specific to running it on StartOS, and the points where Elektron Net deliberately diverges from Bitcoin Core.
 
-## About Elektron
+## About Elektron Net
 
-Elektron is a Bitcoin Core fork with:
+Elektron Net is a Bitcoin Core fork with:
 
 - **60-second block times** (10× faster than Bitcoin).
 - **Mandatory 137-day transaction history retention** — every node prunes block files older than 197,280 blocks from the tip, regardless of disk size. There is no archival-mode option.
@@ -18,24 +18,24 @@ For the full technical diff against Bitcoin Core, see [`doc/BITCOIN_CORE_DIFF.md
 
 ## What you get on StartOS
 
-- **A full Elektron node** — downloads, verifies, and relays the chain, then stays in sync.
+- **A full Elektron Net node** — downloads, verifies, and relays the chain, then stays in sync.
 - **A JSON-RPC interface on port 8332** that other StartOS services and external apps connect to. The RPC surface is largely Bitcoin-compatible; services that speak `bitcoind` RPC generally work unchanged for current-window data.
 - **ZeroMQ block and transaction notifications** for services that subscribe to them.
 - **Privacy networking out of the box** — outbound peer connections go over Tor, and a bundled I2P daemon accepts inbound I2P connections.
-- **Mandatory pruning** — Elektron always runs pruned (137-day window). You cannot toggle this off; it is a protocol-level requirement, not a packaging choice.
+- **Mandatory pruning** — Elektron Net always runs pruned (137-day window). You cannot toggle this off; it is a protocol-level requirement, not a packaging choice.
 - **Configuration through StartOS actions** instead of hand-editing `bitcoin.conf`.
 
 ## Getting set up
 
-There is no setup wizard. Elektron begins syncing on first launch.
+There is no setup wizard. Elektron Net begins syncing on first launch.
 
-1. Open Elektron's **Dashboard** tab to watch sync progress. On a fresh network or after a snapshot bootstrap, the initial sync is fast — typically minutes to hours rather than days.
-2. To use a service that depends on Elektron — a Lightning node, a block explorer, a wallet backend — install it; it will configure its connection automatically.
+1. Open Elektron Net's **Dashboard** tab to watch sync progress. On a fresh network or after a snapshot bootstrap, the initial sync is fast — typically minutes to hours rather than days.
+2. To use a service that depends on Elektron Net — a Lightning node, a block explorer, a wallet backend — install it; it will configure its connection automatically.
 3. To connect an external wallet or app, run **Generate RPC User Credentials** to mint a username and password, then point the app at port 8332.
 
-## Using Elektron
+## Using Elektron Net
 
-Elektron surfaces its interfaces — RPC, peer, ZeroMQ, and the I2P console when enabled — on the **Dashboard** tab; everything else is driven by actions in the service's sidebar.
+Elektron Net surfaces its interfaces — RPC, peer, ZeroMQ, and the I2P console when enabled — on the **Dashboard** tab; everything else is driven by actions in the service's sidebar.
 
 ### RPC access
 
@@ -43,7 +43,7 @@ The JSON-RPC API listens on port 8332. Dependent StartOS services connect and co
 
 ### Mandatory pruning (no archival mode)
 
-Elektron always retains 197,280 blocks (~137 days) of chain history; older blocks are deleted, network-wide, by design ("right to be forgotten"). Implications:
+Elektron Net always retains 197,280 blocks (~137 days) of chain history; older blocks are deleted, network-wide, by design ("right to be forgotten"). Implications:
 
 - Wallets that need transaction history older than the pruning window will not find it on the network. Use seed + UTXO scan to recover spendable balance instead.
 - Block explorers and indexers must maintain their own historical index if they need anything beyond the current window.
@@ -61,13 +61,13 @@ Four actions write to `bitcoin.conf` for you. Only values that differ from upstr
 - **Mempool Settings** — mempool size and expiry, persistence, bare-multisig and `OP_RETURN` relay policy, blocks-only mode.
 - **Peer Settings** — which networks to use (`onlynet`: IPv4/IPv6/Tor/I2P), BIP324 v2 transport, the embedded I2P SAM proxy, manual `addnode`/`connect` peers.
 - **RPC Settings** — RPC server timeout, thread count, work-queue depth.
-- **Other Settings** — ZeroMQ, BIP158/BIP157 block filters, bloom filters, wallet options, database cache tuning. Pruning, `txindex`, and coinstats index are not exposed — see the Elektron-specific notes above.
+- **Other Settings** — ZeroMQ, BIP158/BIP157 block filters, bloom filters, wallet options, database cache tuning. Pruning, `txindex`, and coinstats index are not exposed — see the Elektron Net-specific notes above.
 
 Some options are fixed by the package and not exposed: RPC cookie authentication, peer listen ports, the Tor proxy. Advanced i2pd tuning isn't in the UI either — edit `i2pd.conf` on the `i2pd` volume if you need it.
 
 ### Maintenance
 
-- **Reindex Blockchain** — rebuild blocks and chainstate from scratch (use after on-disk corruption). Since Elektron is always pruned, this re-syncs from the network.
+- **Reindex Blockchain** — rebuild blocks and chainstate from scratch (use after on-disk corruption). Since Elektron Net is always pruned, this re-syncs from the network.
 - **Reindex Chainstate** — rebuild just the chainstate from existing blocks.
 - **Delete Peer List** — remove a corrupted `peers.dat`. The service must be stopped to run this.
 
