@@ -14,6 +14,7 @@ RUN cmake -B build \
         -DBUILD_TESTS=OFF \
         -DBUILD_BENCH=OFF \
         -DBUILD_FUZZ_BINARY=OFF \
+        -DENABLE_IPC=OFF \
         -DINSTALL_MAN=OFF && \
     cmake --build build -j$(nproc) && \
     cmake --install build
