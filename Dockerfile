@@ -29,7 +29,7 @@ ENV ELEKTRON_PREFIX=/opt/elektron
 ENV PATH=${ELEKTRON_PREFIX}/bin:$PATH
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates curl jq tini \
+    ca-certificates curl jq tini e2fsprogs \
     libboost-filesystem1.83.0 \
     libboost-thread1.83.0 \
     libboost-system1.83.0 \
