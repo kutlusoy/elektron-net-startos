@@ -35,7 +35,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p ${ELEKTRON_PREFIX}/bin
-COPY --from=builder /usr/local/bin/bitcoind ${ELEKTRON_PREFIX}/bin/elektrond
-COPY --from=builder /usr/local/bin/bitcoin-cli ${ELEKTRON_PREFIX}/bin/elektron-cli
+COPY --from=builder /usr/local/bin/elektrond ${ELEKTRON_PREFIX}/bin/elektrond
+COPY --from=builder /usr/local/bin/elektron-cli ${ELEKTRON_PREFIX}/bin/elektron-cli
+COPY --from=builder /usr/local/bin/elektron ${ELEKTRON_PREFIX}/bin/elektron
 
 EXPOSE 8332 8333
