@@ -15,6 +15,10 @@ RUN cmake -B build \
         -DBUILD_BENCH=OFF \
         -DBUILD_FUZZ_BINARY=OFF \
         -DENABLE_IPC=OFF \
+        -DWITH_ZMQ=ON \
+        -DBUILD_TX=ON \
+        -DBUILD_UTIL=ON \
+        -DBUILD_WALLET_TOOL=ON \
         -DINSTALL_MAN=OFF && \
     cmake --build build -j$(nproc) && \
     cmake --install build
@@ -38,5 +42,8 @@ RUN mkdir -p ${ELEKTRON_PREFIX}/bin
 COPY --from=builder /usr/local/bin/elektrond ${ELEKTRON_PREFIX}/bin/elektrond
 COPY --from=builder /usr/local/bin/elektron-cli ${ELEKTRON_PREFIX}/bin/elektron-cli
 COPY --from=builder /usr/local/bin/elektron ${ELEKTRON_PREFIX}/bin/elektron
+COPY --from=builder /usr/local/bin/elektron-tx ${ELEKTRON_PREFIX}/bin/elektron-tx
+COPY --from=builder /usr/local/bin/elektron-util ${ELEKTRON_PREFIX}/bin/elektron-util
+COPY --from=builder /usr/local/bin/elektron-wallet ${ELEKTRON_PREFIX}/bin/elektron-wallet
 
 EXPOSE 8332 8333
