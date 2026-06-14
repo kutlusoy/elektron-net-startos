@@ -35,6 +35,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libboost-system1.83.0 \
     libevent-core-2.1-7 \
     libevent-pthreads-2.1-7 \
+    libevent_extra-2.1.so.7 \
     libzmq5 \
     libsqlite3-0 && \
     rm -rf /var/lib/apt/lists/*
