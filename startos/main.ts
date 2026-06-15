@@ -229,21 +229,25 @@ export const main = sdk.setupMain(async ({ effects }) => {
             typeof res.stdout === 'string'
           ) {
             const info: GetBlockchainInfo = JSON.parse(res.stdout)
+              
+            const isSynced =
+                (info.blocks > 0 && info.blocks >= info.headers) ||
+                info.verificationprogress >= 0.9999
 
-            if (info.initialblockdownload) {
-              const percentage = (info.verificationprogress * 100).toFixed(2)
-              return {
-                message: i18n('Syncing blocks...${percentage}%', {
-                  percentage,
-                }),
-                result: 'loading',
+              if (info.initialblockdownload && !isSynced) {
+                const percentage = (info.verificationprogress * 100).toFixed(2)
+                return {
+                  message: i18n('Syncing blocks...${percentage}%', {
+                    percentage,
+                  }),
+                  result: 'loading',
+                }
               }
-            }
 
-            return {
-              message: i18n('Elektron Net is fully synced'),
-              result: 'success',
-            }
+              return {
+                message: i18n('Elektron Net is fully synced'),
+                result: 'success',
+              }
           }
 
           return {
