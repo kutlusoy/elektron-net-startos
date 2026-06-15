@@ -86,7 +86,10 @@ export const main = sdk.setupMain(async ({ effects }) => {
   }
 
   const bitcoinArgs: string[] = [`-datadir=${rootDir}`]
-  if (torIp) bitcoinArgs.push(`-onion=${torIp}:9050`)
+  if (torIp) {
+    bitcoinArgs.push(`-onion=${torIp}:9050`)
+    bitcoinArgs.push('-listenonion=0') // 
+  }
 
   if (reindexBlockchain) {
     bitcoinArgs.push('-reindex')

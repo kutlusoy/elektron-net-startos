@@ -63,4 +63,16 @@ export const manifest = setupManifest({
       },
     },
   },
+  interfaces: {
+    p2p: {
+      name: 'P2P Netzwerk',
+      description: 'Allow other Elektron Net Nodes, to connect to your Node with Tor.',
+      lanConfig: null, 
+      torConfig: {
+        // "Interner Port im Container": Externer Tor-Port
+        '8333': 8333, 
+      },
+      ui: false,
+    },
+  },
 })
