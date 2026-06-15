@@ -4,12 +4,10 @@ import { sdk } from './sdk'
 import {
   i2pUiPort,
   peerInterfaceId,
-  peerPortExternal,
   peerPortInternal,
+  resolvePorts,
   rpcInterfaceId,
-  rpcPort,
   zmqInterfaceId,
-  zmqPortBlock,
 } from './utils'
 import { i18n } from './i18n'
 
@@ -18,11 +16,13 @@ export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
 
   if (!bitcoinConf) return []
 
+  const ports = resolvePorts(bitcoinConf.networking)
+
   // RPC
   const rpcMulti = sdk.MultiHost.of(effects, 'rpc')
-  const rpcMultiOrigin = await rpcMulti.bindPort(rpcPort, {
+  const rpcMultiOrigin = await rpcMulti.bindPort(ports.rpc, {
     protocol: 'http',
-    preferredExternalPort: rpcPort,
+    preferredExternalPort: ports.rpc,
   })
   const rpc = sdk.createInterface(effects, {
     name: i18n('RPC Interface'),
@@ -39,11 +39,11 @@ export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
 
   const receipts = [rpcReceipt]
 
-  // Peer
+  // Peer — daemon listens internally on peerPortInternal, host is mapped to ports.peer
   const peerMulti = sdk.MultiHost.of(effects, 'peer')
   const peerMultiOrigin = await peerMulti.bindPort(peerPortInternal, {
     protocol: null,
-    preferredExternalPort: peerPortExternal,
+    preferredExternalPort: ports.peer,
     addSsl: null,
     secure: { ssl: false },
   })
@@ -67,8 +67,8 @@ export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
   // ZMQ (conditional)
   if (bitcoinConf.zmqEnabled) {
     const zmqMulti = sdk.MultiHost.of(effects, 'zmq')
-    const zmqMultiOrigin = await zmqMulti.bindPort(zmqPortBlock, {
-      preferredExternalPort: zmqPortBlock,
+    const zmqMultiOrigin = await zmqMulti.bindPort(ports.zmqBlock, {
+      preferredExternalPort: ports.zmqBlock,
       addSsl: null,
       secure: { ssl: false },
       protocol: null,

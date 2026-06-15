@@ -270,6 +270,22 @@ const dict = {
   // Common
   Configuration: 1800,
   Default: 2000,
+
+  // fileModels/bitcoin.conf.ts (networking)
+  'Network Ports': 2100,
+  'Ports on which Elektron Net listens. Defaults differ from Bitcoin Core (8332/8333/28332/28333) to avoid collisions when both packages are installed on the same StartOS. A service restart is required when changing these values.': 2101,
+  'RPC Port': 2102,
+  'JSON-RPC port. Used by wallets, indexers, and dependent packages.': 2103,
+  'Bitcoin Core uses 8332': 2104,
+  'P2P Port': 2105,
+  'Peer-to-peer port advertised to other Elektron Net nodes. Other nodes can still reach you on a non-default port (the port is gossipped via addr messages).': 2106,
+  'Bitcoin Core uses 8333': 2107,
+  'ZMQ Block Port': 2108,
+  'ZeroMQ publication port for block notifications (rawblock + hashblock).': 2109,
+  'Bitcoin Core uses 28332': 2110,
+  'ZMQ Transaction Port': 2111,
+  'ZeroMQ publication port for transaction and sequence notifications (rawtx + hashtx + sequence).': 2112,
+  'Bitcoin Core uses 28333': 2113,
 } as const
 
 /**

@@ -4,15 +4,20 @@ import { totalmem } from 'os'
 import { i18n } from '../i18n'
 import { sdk } from '../sdk'
 import {
+  buildZmqBundle,
   i2PSamAddress,
+  parseZmqPort,
   peerPortExternal,
   peerPortInternal,
+  rpcPort,
+  rpcPortPruned,
   rpcallowip,
   rpcallowipPruned,
-  rpcbind,
-  rpcbindPruned,
+  rpcBindFor,
   rpccookiefile,
-  zmqBundle,
+  resolvePorts,
+  zmqPortBlock,
+  zmqPortTransaction,
 } from '../utils'
 
 // INI coercion helpers: INI parsing returns strings, with duplicate keys producing arrays.
@@ -53,20 +58,18 @@ const onlyNetOption = z.enum(validNets)
 type ValidNets = z.infer<typeof onlyNetOption>
 
 export const shape = z.object({
-  // RPC enforced
-  rpcbind: z.enum([rpcbind, rpcbindPruned]).catch(rpcbind),
+  // RPC enforced — bind value derived from `networking.rpcport` at write time
+  rpcbind: z.string().catch(`0.0.0.0:${rpcPort}`),
   rpcallowip: z.enum([rpcallowip, rpcallowipPruned]).catch(rpcallowip),
   rpcuser: z.undefined().optional().catch(undefined),
   rpcpassword: z.undefined().optional().catch(undefined),
   rpccookiefile: z.literal(rpccookiefile).catch(rpccookiefile),
-  // Peers enforced
+  rpcport: iniNumber,
+  // Peers enforced — values derived from `networking.peerport` at write time
   listen: z.literal(true).catch(true),
-  bind: z
-    .literal(`0.0.0.0:${peerPortInternal}`)
-    .catch(`0.0.0.0:${peerPortInternal}`),
-  whitebind: z
-    .literal(`0.0.0.0:${peerPortExternal}`)
-    .catch(`0.0.0.0:${peerPortExternal}`),
+  bind: z.string().catch(`0.0.0.0:${peerPortInternal}`),
+  whitebind: z.string().catch(`0.0.0.0:${peerPortExternal}`),
+  port: iniNumber,
   // Mempool enforced
   mempoolfullrbf: z.undefined().optional().catch(undefined),
 
@@ -177,6 +180,64 @@ export const defaultDbbatchsize = () =>
 
 export const fullConfigSpec = sdk.InputSpec.of({
   raw: Value.hidden(shape),
+  networking: Value.object(
+    {
+      name: i18n('Network Ports'),
+      description: i18n(
+        'Ports on which Elektron Net listens. Defaults differ from Bitcoin Core (8332/8333/28332/28333) to avoid collisions when both packages are installed on the same StartOS. A service restart is required when changing these values.',
+      ),
+    },
+    InputSpec.of({
+      rpcport: Value.number({
+        name: i18n('RPC Port'),
+        description: i18n(
+          'JSON-RPC port. Used by wallets, indexers, and dependent packages.',
+        ),
+        required: false,
+        default: rpcPort,
+        min: 1024,
+        max: 65535,
+        integer: true,
+        footnote: `${i18n('Default')}: ${rpcPort} (${i18n('Bitcoin Core uses 8332')})`,
+      }),
+      peerport: Value.number({
+        name: i18n('P2P Port'),
+        description: i18n(
+          'Peer-to-peer port advertised to other Elektron Net nodes. Other nodes can still reach you on a non-default port (the port is gossipped via addr messages).',
+        ),
+        required: false,
+        default: peerPortExternal,
+        min: 1024,
+        max: 65535,
+        integer: true,
+        footnote: `${i18n('Default')}: ${peerPortExternal} (${i18n('Bitcoin Core uses 8333')})`,
+      }),
+      zmqblockport: Value.number({
+        name: i18n('ZMQ Block Port'),
+        description: i18n(
+          'ZeroMQ publication port for block notifications (rawblock + hashblock).',
+        ),
+        required: false,
+        default: zmqPortBlock,
+        min: 1024,
+        max: 65535,
+        integer: true,
+        footnote: `${i18n('Default')}: ${zmqPortBlock} (${i18n('Bitcoin Core uses 28332')})`,
+      }),
+      zmqtxport: Value.number({
+        name: i18n('ZMQ Transaction Port'),
+        description: i18n(
+          'ZeroMQ publication port for transaction and sequence notifications (rawtx + hashtx + sequence).',
+        ),
+        required: false,
+        default: zmqPortTransaction,
+        min: 1024,
+        max: 65535,
+        integer: true,
+        footnote: `${i18n('Default')}: ${zmqPortTransaction} (${i18n('Bitcoin Core uses 28333')})`,
+      }),
+    }),
+  ),
   persistmempool: Value.triState({
     name: i18n('Persist Mempool'),
     description: i18n('Save the mempool on shutdown and load on restart.'),
@@ -501,6 +562,12 @@ export const fullConfigSpec = sdk.InputSpec.of({
 function fileToForm(
   input: z.infer<typeof shape>,
 ): T.DeepPartial<typeof fullConfigSpec._TYPE> {
+  const networking = {
+    rpcport: input.rpcport ?? rpcPort,
+    peerport: input.port ?? peerPortExternal,
+    zmqblockport: parseZmqPort(input.zmqpubrawblock) ?? zmqPortBlock,
+    zmqtxport: parseZmqPort(input.zmqpubrawtx) ?? zmqPortTransaction,
+  }
   const {
     persistmempool,
     maxmempool,
@@ -539,6 +606,7 @@ function fileToForm(
 
   return {
     raw: input ?? {},
+    networking,
     persistmempool,
     maxmempool,
     mempoolexpiry,
@@ -601,6 +669,7 @@ function fileToForm(
 function formToFile(
   input: T.DeepPartial<typeof fullConfigSpec._TYPE>,
 ): z.infer<typeof shape> {
+  const ports = resolvePorts(input.networking)
   const {
     raw,
     persistmempool,
@@ -636,7 +705,9 @@ function formToFile(
     rpccookiefile: '.cookie',
     listen: true,
     bind: `0.0.0.0:${peerPortInternal}`,
-    whitebind: `0.0.0.0:${peerPortExternal}`,
+    whitebind: `0.0.0.0:${ports.peer}`,
+    port: ports.peer,
+    rpcport: ports.rpc,
     rpcauth: raw?.rpcauth?.filter((a) => !!a) as string[] | undefined,
     whitelist: raw?.whitelist?.filter((a) => !!a) as string[] | undefined,
     externalip: raw?.externalip?.filter((a) => !!a) as string[] | undefined,
@@ -650,7 +721,7 @@ function formToFile(
     datacarriersize: datacarriersize ?? undefined,
 
     // RPC
-    rpcbind: prune ? rpcbindPruned : rpcbind,
+    rpcbind: rpcBindFor({ prune: !!prune, rpcPort: ports.rpc }),
     rpcallowip: prune ? rpcallowipPruned : rpcallowip,
 
     // Wallet
@@ -675,7 +746,7 @@ function formToFile(
     dbbatchsize: dbbatchsize ?? undefined,
     // ZMQ
     ...(zmqEnabled === true
-      ? zmqBundle
+      ? buildZmqBundle(ports)
       : zmqEnabled === false
         ? {
             zmqpubrawblock: undefined,
