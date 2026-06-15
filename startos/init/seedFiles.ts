@@ -25,6 +25,11 @@ export const seedFiles = sdk.setupOnInit(async (effects, kind) => {
       prune: minPrune,
       raw: {
         i2psam: i2PSamAddress,
+        // --- Log-Cap: debug.log klein halten ---
+        debug: '0', // disable alle debug-Kategorien (Default: alle an)
+        shrinkdebugfile: true, // bei jedem Daemon-Start auf 200KB schrumpfen
+        logips: false, // keine IP-Adressen in Logs (Privacy + Size)
+        logsourcelocations: false, // keine src/file:line Annotationen
       },
     })
   } else {

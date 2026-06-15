@@ -85,7 +85,8 @@ export const main = sdk.setupMain(async ({ effects }) => {
     })
   }
 
-  const bitcoinArgs: string[] = torIp ? [`-onion=${torIp}:9050`] : []
+  const bitcoinArgs: string[] = [`-datadir=${rootDir}`]
+  if (torIp) bitcoinArgs.push(`-onion=${torIp}:9050`)
 
   if (reindexBlockchain) {
     bitcoinArgs.push('-reindex')
@@ -187,7 +188,6 @@ export const main = sdk.setupMain(async ({ effects }) => {
           try {
             await access(`${bitcoindSub.rootfs}${rpcCookiePath}`)
           } catch {
-            console.log('Waiting for cookie to be created')
             return {
               message: i18n('The Elektron Net RPC Interface is not ready'),
               result: 'starting',

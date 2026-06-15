@@ -142,6 +142,12 @@ export const shape = z.object({
     .optional()
     .catch(undefined),
   peerblockfilters: iniBoolean,
+
+  // Logging
+  debug: iniString,
+  shrinkdebugfile: iniBoolean,
+  logips: iniBoolean,
+  logsourcelocations: iniBoolean,
 })
 
 function stringifyPrimitives(a: unknown): any {
