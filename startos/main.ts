@@ -11,9 +11,9 @@ import {
   bitcoinMounts,
   GetBlockchainInfo,
   i2pControlPort,
-  resolvePorts,
   rootDir,
   rpccookiefile,
+  rpcPort,
   rpcPortPruned,
 } from './utils'
 
@@ -71,8 +71,6 @@ export const main = sdk.setupMain(async ({ effects }) => {
   // get i2pd.conf and watch for changes
   const i2pdConf = await i2pdConfFile.read().const(effects)
 
-  const ports = resolvePorts(bitcoinConf.networking)
-
   const { reindexBlockchain, reindexChainstate } = store
 
   // get Tor container IP (restarts Elektron Net if IP changes, needed for -onion= flag)
@@ -89,9 +87,6 @@ export const main = sdk.setupMain(async ({ effects }) => {
 
   const bitcoinArgs: string[] = [`-datadir=${rootDir}`]
   if (torIp) bitcoinArgs.push(`-onion=${torIp}:9050`)
-  // StartOS Tor exposes only the SOCKS port; disable the control-port poller
-  // to avoid the periodic "connect() to 127.0.0.1:9051 failed" log spam.
-  bitcoinArgs.push('-torcontrol=0')
 
   if (reindexBlockchain) {
     bitcoinArgs.push('-reindex')
@@ -201,7 +196,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
 
           return sdk.healthCheck.checkPortListening(
             effects,
-            bitcoinConf.prune ? rpcPortPruned : ports.rpc,
+            bitcoinConf.prune ? rpcPortPruned : rpcPort,
             {
               successMessage: i18n('The Elektron Net RPC Interface is ready'),
               errorMessage: i18n('The Elektron Net RPC Interface is not ready'),
@@ -232,15 +227,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
           ) {
             const info: GetBlockchainInfo = JSON.parse(res.stdout)
 
-            // Elektron's brand-new chain often has a tip > 24h old (mining is
-            // intermittent during bootstrap), so `initialblockdownload` can
-            // stay true even after we are caught up. Treat the node as fully
-            // synced once verification is at the tip and headers == blocks.
-            const caughtUp =
-              info.verificationprogress >= 0.9999 &&
-              info.blocks === info.headers &&
-              info.headers > 0
-            if (info.initialblockdownload && !caughtUp) {
+            if (info.initialblockdownload) {
               const percentage = (info.verificationprogress * 100).toFixed(2)
               return {
                 message: i18n('Syncing blocks...${percentage}%', {
@@ -435,7 +422,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
         bitcoind_address: '127.0.0.1',
         bitcoind_port: rpcPortPruned,
         bind_address: '0.0.0.0',
-        bind_port: ports.rpc,
+        bind_port: rpcPort,
         cookie_file: rpcCookiePath,
         ...(torIp
           ? {
@@ -459,7 +446,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
       ready: {
         display: i18n('RPC Proxy'),
         fn: () =>
-          sdk.healthCheck.checkPortListening(effects, ports.rpc, {
+          sdk.healthCheck.checkPortListening(effects, rpcPort, {
             successMessage: i18n('The Elektron Net RPC Proxy is ready'),
             errorMessage: i18n('The Elektron Net RPC Proxy is not ready'),
           }),
