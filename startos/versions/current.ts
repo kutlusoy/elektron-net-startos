@@ -1,10 +1,10 @@
 import { VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '4.0.0:0',
+  version: '4.0.1:35',
   releaseNotes: {
-    en_US: 'Initial StartOS packaging for Elektron Net.',
-    de_DE: 'Erste StartOS-Paket für Elektron Net.',
+    en_US: 'StartOS for Elektron Net v4.0.1:35.',
+    de_DE: 'StartOS für Elektron Net v4.0.1:35.',
   },
   migrations: {
     up: async ({ effects }) => {},
