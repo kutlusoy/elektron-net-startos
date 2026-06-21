@@ -6,7 +6,7 @@ A minimal, focused fork of Bitcoin Core. Elektron Net preserves Bitcoin's SHA-25
 
 Bitcoin's ledger is a monument: every transaction etched in cryptographic stone, forever. Elektron Net takes a different stance — borrowed from Stoic philosophy: secure what you can control, let go of what you cannot. The UTXO set — your current balance, your "pocket" — is the only permanent data structure in the network. Transaction history before the trailing 137-day window (α⁻¹ days, the fine-structure constant) is **mathematically erased**. Not hidden, not encrypted — gone. Not because anyone ordered it, but because the protocol makes retention impossible. Named after the Lydian Elektron, struck in Asia Minor around 600 BC — the first decentralised currency in history.
 
-The currency unit is **Elektron** (symbol: **ELEK**, 1 ELEK = 10⁸ leptons). For the full motivation, see the [Elektron Net Whitepaper](https://github.com/kutlusoy/elektron-net/blob/main/WHITEPAPER.md). For the implementation diff against Bitcoin Core, see [`doc/BITCOIN_CORE_DIFF.md`](https://github.com/kutlusoy/elektron-net/blob/main/doc/BITCOIN_CORE_DIFF.md).
+The currency unit is **Elektron** (symbol: **ELEK**, 1 ELEK = 10⁸ leptons). For the full motivation, see the [Elektron Net Whitepaper](https://github.com/kutlusoy/elektron-net/blob/main/WHITEPAPER.md). For the implementation diff against Bitcoin Core, see [`doc-elektron/BITCOIN_CORE_DIFF.md`](https://github.com/kutlusoy/elektron-net/blob/main/doc-elektron/BITCOIN_CORE_DIFF.md).
 
 ## What stays the same as Bitcoin
 
@@ -74,7 +74,7 @@ Standard Bitcoin Stratum servers produce **invalid** blocks until adapted. The r
 - Fetch a fresh GBT per block (the attestation changes every block).
 - Respect the `bits` field from GBT to honour Stoic Awakening transitions.
 
-Reference miner code: [`mining/miner.py`](https://github.com/kutlusoy/elektron-net/blob/main/mining/miner.py), [`mining/miner.cpp`](https://github.com/kutlusoy/elektron-net/blob/main/mining/miner.cpp). Detailed pool integration guide: [`doc/mining-pool-integration.md`](https://github.com/kutlusoy/elektron-net/blob/main/doc/mining-pool-integration.md). ASIC firmware needs no changes — it only hashes block headers.
+Reference miner code: [`mining/miner.py`](https://github.com/kutlusoy/elektron-net/blob/main/mining/miner.py), [`mining/miner.cpp`](https://github.com/kutlusoy/elektron-net/blob/main/mining/miner.cpp). Detailed pool integration guide: [`doc-elektron/mining-pool-integration.md`](https://github.com/kutlusoy/elektron-net/blob/main/doc-elektron/mining-pool-integration.md). ASIC firmware needs no changes — it only hashes block headers.
 
 ## Using Elektron Net
 

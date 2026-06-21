@@ -1,8 +1,10 @@
-﻿name: Build elektrond.s9pk
+# .github/workflows/build.yml
+name: Build elektrond.s9pk
 
 on:
   push:
-    branches: [main]
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 env:
@@ -53,12 +55,12 @@ jobs:
           name: elektrond-s9pk
           path: "*.s9pk"
 
-      - name: Create Release
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
-        if: github.ref == 'refs/heads/main'
         with:
-          tag_name: build-${{ github.run_number }}
-          name: "Elektron Build ${{ github.run_number }}"
+          tag_name: ${{ github.ref_name }}
+          name: "Elektron Net StartOS Release ${{ github.ref_name }}"
           files: "*.s9pk"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
