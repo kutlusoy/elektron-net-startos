@@ -48,8 +48,21 @@ jobs:
       - name: Install npm dependencies
         run: npm install
 
-      - name: Init developer key
-        run: start-cli init
+      - name: Debug start-cli command tree
+        run: |
+          echo "=== start-cli --help ==="
+          start-cli --help || true
+          echo "=== start-cli help ==="
+          start-cli help || true
+          echo "=== start-cli s9pk --help ==="
+          start-cli s9pk --help || true
+          echo "=== start-cli key --help ==="
+          start-cli key --help || true
+          echo "=== start-cli auth --help ==="
+          start-cli auth --help || true
+          echo "=== start-cli package --help ==="
+          start-cli package --help || true
+          exit 1
 
       - name: Compile TypeScript to javascript/index.js
         run: npm run build
