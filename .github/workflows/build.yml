@@ -37,19 +37,16 @@ jobs:
       - name: Install start-cli
         run: curl -fsSL https://start9.com/start-cli/install.sh | sh
 
-      - name: Initialize packaging workspace
-        run: |
-          # start-cli expects a "workspace" directory that *contains* the
-          # package repo, not the repo itself. Init one in the parent of
-          # $GITHUB_WORKSPACE (the checked-out repo).
-          cd "$(dirname "$GITHUB_WORKSPACE")"
-          start-cli s9pk init-workspace
-
       - name: Install npm dependencies
         run: npm install
 
       - name: Init developer key
-        run: start-cli init
+        run: start-cli init-key
+
+      - name: Provision workspace build key
+        run: |
+          mkdir -p .startos
+          cp ~/.startos/id.key.pem .startos/build.key.pem
 
       - name: Compile TypeScript to javascript/index.js
         run: npm run build
