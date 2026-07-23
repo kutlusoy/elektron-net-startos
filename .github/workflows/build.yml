@@ -48,20 +48,20 @@ jobs:
       - name: Install npm dependencies
         run: npm install
 
-      - name: Debug start-cli command tree
+      - name: Debug start-cli init-key command
         run: |
-          echo "=== start-cli --help ==="
-          start-cli --help || true
-          echo "=== start-cli help ==="
-          start-cli help || true
-          echo "=== start-cli s9pk --help ==="
-          start-cli s9pk --help || true
-          echo "=== start-cli key --help ==="
-          start-cli key --help || true
-          echo "=== start-cli auth --help ==="
-          start-cli auth --help || true
-          echo "=== start-cli package --help ==="
-          start-cli package --help || true
+          echo "=== start-cli init-key --help ==="
+          start-cli init-key --help || true
+          echo "=== start-cli help init-key ==="
+          start-cli help init-key || true
+          echo "=== start-cli s9pk pack --help ==="
+          start-cli s9pk pack --help || true
+          echo "=== start-cli s9pk init-package --help ==="
+          start-cli s9pk init-package --help || true
+          echo "=== env dump ==="
+          env | grep -i start || true
+          echo "=== default config search ==="
+          find "$HOME" -iname "*start*cli*" -o -iname "*.embassy*" 2>/dev/null || true
           exit 1
 
       - name: Compile TypeScript to javascript/index.js
