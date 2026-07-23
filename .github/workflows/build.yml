@@ -49,7 +49,7 @@ jobs:
         run: npm install
 
       - name: Init developer key
-        run: start-cli init-key
+        run: start-cli init
 
       - name: Compile TypeScript to javascript/index.js
         run: npm run build
