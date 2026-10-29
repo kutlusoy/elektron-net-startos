@@ -1,8 +1,8 @@
 export const short = {
   en_US:
-    'A minimal Bitcoin Core fork: 60-second blocks and mandatory 137-day pruning. The UTXO set persists; transaction history is mathematically erased after α⁻¹ days.',
+    'Elektron Net (Bitcoin fork): 60-second blocks, mandatory 137-day pruning – only the UTXO set remains.',
   de_DE:
-    'Ein minimaler Bitcoin-Core-Fork: 60-Sekunden-Blöcke und verpflichtendes 137-Tage-Pruning. Das UTXO-Set bleibt; die Transaktionshistorie wird nach α⁻¹ Tagen mathematisch gelöscht.',
+    'Elektron Net (Bitcoin-Fork): 60-Sekunden-Blöcke, 137-Tage-Pruning – nur das UTXO-Set bleibt.',
 }
 
 export const long = {
